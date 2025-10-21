@@ -5,114 +5,130 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Imaginative Digital Art Generator</title>
     <style>
-        body {
-            margin: 0;
-            padding: 20px;
-            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: white;
-            overflow-x: hidden;
-        }
-        
-        .container {
-            max-width: 900px;
-            width: 100%;
-            text-align: center;
-        }
-        
-        h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
-            background: linear-gradient(to right, #ff7eb3, #ff70a6, #ff85a2, #ff9999);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: glow 2s ease-in-out infinite alternate;
-        }
+        /* Minimal styles (kept inline to match project convention) */
+        body { margin: 0; padding: 20px; background: linear-gradient(135deg,#1a2a6c,#b21f1f,#1a2a6c); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: white; }
+        .container { max-width: 1200px; margin: 0 auto; text-align: center; }
+        .controls { margin: 20px 0; }
+        canvas { width: 100%; height: 400px; background: rgba(0,0,0,0.7); display: block; border-radius: 10px; }
+        .particles { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    <div class="container">
+        <h1>Imaginative Digital Art Generator</h1>
+        <div class="controls">
+            <button id="generateBtn">Generate New Art</button>
+            <button id="randomBtn">Random Style</button>
+            <button id="saveBtn">Save Artwork</button>
+            <button id="pauseBtn">Pause</button>
+            <button id="waveBtn">Wave</button>
+            <button id="spiralBtn">Spiral</button>
+            <button id="fractalBtn">Fractal</button>
+        </div>
+        <div class="canvas-container">
+            <canvas id="artCanvas"></canvas>
+        </div>
+        <div class="art-info">
+            <h2>Current Artwork</h2>
+            <p id="artDescription">A mesmerizing blend of geometric patterns and fluid dynamics.</p>
+        </div>
+    </div>
 
-        @keyframes glow {
-            from {
-                text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #e60073, 0 0 20px #e60073;
+    <script>
+        // Create background particles (DOM-based)
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            particlesContainer.innerHTML = '';
+            const particleCount = 40;
+            for (let i = 0; i < particleCount; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                const size = Math.random() * 10 + 2;
+                p.style.width = p.style.height = size + 'px';
+                p.style.left = (Math.random() * 100) + '%';
+                p.style.top = (Math.random() * 100) + '%';
+                p.style.position = 'absolute';
+                p.style.background = `hsla(${Math.random()*360},100%,70%,0.6)`;
+                p.style.borderRadius = '50%';
+                particlesContainer.appendChild(p);
             }
-            to {
-                text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6;
+        }
+
+        class ArtGenerator {
+            constructor(canvasId) {
+                this.canvas = document.getElementById(canvasId);
+                this.ctx = this.canvas.getContext('2d');
+                this.resizeCanvas();
+                window.addEventListener('resize', () => this.resizeCanvas());
+                this.currentStyle = 'wave';
+                this.animationId = null;
             }
+
+            resizeCanvas() {
+                const container = this.canvas.parentElement;
+                this.canvas.width = Math.max(300, container.clientWidth - 40);
+                this.canvas.height = 400;
+            }
+
+            drawWavePattern(time) {
+                const w = this.canvas.width, h = this.canvas.height;
+                this.ctx.fillStyle = 'rgba(0,0,0,0.08)';
+                this.ctx.fillRect(0,0,w,h);
+                this.ctx.beginPath();
+                this.ctx.lineWidth = 3;
+                this.ctx.strokeStyle = `hsl(${(time*0.02)%360},100%,60%)`;
+                for (let y=0;y<h;y+=6){
+                    const x = Math.sin(y*0.02 + time*0.001)*60 + w/2;
+                    y===0?this.ctx.moveTo(x,y):this.ctx.lineTo(x,y);
+                }
+                this.ctx.stroke();
+            }
+
+            drawSpiralPattern(time){
+                const w=this.canvas.width, h=this.canvas.height, cx=w/2, cy=h/2;
+                this.ctx.fillStyle = 'rgba(0,0,0,0.08)'; this.ctx.fillRect(0,0,w,h);
+                this.ctx.beginPath(); this.ctx.lineWidth=2; this.ctx.strokeStyle = `hsl(${(time*0.03)%360},80%,60%)`;
+                const maxR = Math.min(w,h)*0.4;
+                for(let i=0;i<300;i++){ const a=(i/300)*Math.PI*8; const r=(i/300)*maxR; const x=cx+Math.cos(a+time*0.001)*r; const y=cy+Math.sin(a+time*0.001)*r; i===0?this.ctx.moveTo(x,y):this.ctx.lineTo(x,y);} this.ctx.stroke();
+            }
+
+            drawFractalPattern(time){
+                const w=this.canvas.width,h=this.canvas.height; this.ctx.fillStyle='rgba(0,0,0,0.08)'; this.ctx.fillRect(0,0,w,h);
+                this.drawFractal(0,0,w,h,time*0.001,4);
+            }
+
+            drawFractal(x,y,w,h,t,depth){
+                if(depth<=0) return; const cx=x+w/2, cy=y+h/2; this.ctx.beginPath(); this.ctx.arc(cx,cy,Math.min(w,h)*0.12,0,Math.PI*2); this.ctx.fillStyle = `hsla(${(t*50+depth*20)%360},80%,60%,0.6)`; this.ctx.fill();
+                const nw=w/2, nh=h/2; this.drawFractal(x,y,nw,nh,t,depth-1); this.drawFractal(x+nw,y,nw,nh,t,depth-1); this.drawFractal(x,y+nh,nw,nh,t,depth-1); this.drawFractal(x+nw,y+nh,nw,nh,t,depth-1);
+            }
+
+            draw(time){
+                switch(this.currentStyle){case 'wave': this.drawWavePattern(time); break; case 'spiral': this.drawSpiralPattern(time); break; case 'fractal': this.drawFractalPattern(time); break;}
+                this.animationId = requestAnimationFrame((t)=>this.draw(t));
+            }
+
+            start(){ if(this.animationId) cancelAnimationFrame(this.animationId); this.draw(0); }
+            pause(){ if(this.animationId){ cancelAnimationFrame(this.animationId); this.animationId = null; } }
+            changeStyle(s){ this.currentStyle = s; this.start(); }
         }
 
-        body {
-            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            overflow: hidden;
-        }
+        const artGenerator = new ArtGenerator('artCanvas');
+        createParticles();
+        artGenerator.start();
 
-        .container {
-            text-align: center;
-            max-width: 800px;
-            padding: 2rem;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .container::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
-            z-index: -1;
-        }
-
-        h1 {
-            text-align: center;
-            color: #333;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f9f9f9;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-
-        .artwork {
-            text-align: center;
-            margin: 20px 0;
-        }
-
-        .artwork pre {
-            background-color: #fff;
-            padding: 15px;
-            border-radius: 5px;
-            overflow-x: auto;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-        }
-
-        h1, h2 {
-            color: #333;
-        }
-
-        p {
-            line-height: 1.6;
-        }
-</environment_details>
+        // UI wiring
+        document.getElementById('generateBtn').addEventListener('click', ()=> artGenerator.start());
+        document.getElementById('randomBtn').addEventListener('click', ()=> {
+            const styles=['wave','spiral','fractal']; const s = styles[Math.floor(Math.random()*styles.length)]; artGenerator.changeStyle(s);
+        });
+        document.getElementById('saveBtn').addEventListener('click', ()=>{
+            const link = document.createElement('a'); link.download = 'artwork.png'; link.href = artGenerator.canvas.toDataURL('image/png'); link.click();
+        });
+        document.getElementById('pauseBtn').addEventListener('click', ()=> artGenerator.pause());
+        document.getElementById('waveBtn').addEventListener('click', ()=> artGenerator.changeStyle('wave'));
+        document.getElementById('spiralBtn').addEventListener('click', ()=> artGenerator.changeStyle('spiral'));
+        document.getElementById('fractalBtn').addEventListener('click', ()=> artGenerator.changeStyle('fractal'));
+    </script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dream Generator - Imaginative Experience</title>
+    <title>Imagine</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -11,11 +11,10 @@
         <header>
             <h1>✨ Dream Generator ✨</h1>
             <p>Discover imaginative worlds and ideas</p>
+        <header>
+            <h1>Imagina lo que no puedes crear...hasta ahora...!</h1>
+            <p>Discover imaginative worlds and ideas</p>
         </header>
-        
-        <main>
-            <div class="generator-section">
-                <button id="generateBtn" class="generate-btn">Generate New Dream</button>
                 <div id="dreamOutput" class="dream-output"></div>
             </div>
             
@@ -32,180 +31,24 @@
         <script>
             // Sample data for imaginative concepts
             const concepts = [
-                "A floating city in the clouds where gravity can be turned on and off",
-                "An ocean that flows upward into the sky, creating upside-down waterfalls",
-                "A library where books write themselves based on your thoughts",
-                "A forest where trees whisper secrets of the past to those who listen carefully",
-                "A planet where time moves backwards during the night",
-                "An underground city powered by bioluminescent fungi",
-                "A school where students learn by living inside their lessons",
-                "A mountain that changes its shape every century",
-                "A museum where exhibits come alive for one hour each day",
-                "A river that flows in spirals, never reaching its destination"
-}
+                    "A floating city in the clouds where gravity can be turned on and off",
+                    "An ocean that flows upward into the sky, creating upside-down waterfalls",
+                    "A library where books write themselves based on your thoughts",
+                    "A forest where trees whisper secrets of the past to those who listen carefully",
+                    "A planet where time moves backwards during the night",
+                    "An underground city powered by bioluminescent fungi",
+                    "A school where students learn by living inside their lessons",
+                    "A mountain that changes its shape every century",
+                    "A museum where exhibits come alive for one hour each day",
+                    "A river that flows in spirals, never reaching its destination"
+                ];
 
-# Actively Running Terminals
-No actively running terminals detected.
-
-<write_to_file>
-<path>index.html</path>
-<content>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Imaginative Creation</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
-            color: white;
-            margin: 0;
-            padding: 20px;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-        }
-        .container {
-            max-width: 800px;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        }
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            text-shadow: 0 0 10px #00bfff;
-        }
-        p {
-            font-size: 1.1rem;
-            line-height: 1.6;
-        }
-        .code-block {
-            background-color: #2d2d2d;
-            padding: 15px;
-            border-radius: 8px;
-            overflow-x: auto;
-            margin: 20px 0;
-        }
-        .highlight {
-            color: #00bfff;
-            font-weight: bold;
-        }
-        .terminal-output {
-            background-color: #000;
-            color: #0f0;
-            padding: 15px;
-            border-radius: 8px;
-            font-family: monospace;
-            margin: 20px 0;
-        }
-<write_to_file>
-<path>index.html</path>
-<content>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Imaginative Creation</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            position: relative;
-        }
-        
-        .container {
-            text-align: center;
-            padding: 2rem;
-            background: rgba(0, 0, 0, 0.7);
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(10px);
-            max-width: 800px;
-            z-index: 10;
-        }
-        
-        h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            color: #00ff00;
-            text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
-            animation: glow 2s infinite alternate;
-        }
-        
-        @keyframes glow {
-            from {
-                text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #e60073, 0 0 20px #e60073;
-            }
-            to {
-                text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6;
-            }
-        }
-        
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            font-family: 'Arial', sans-serif;
-            color: white;
-            text-align: center;
-        }
-        
-        .title {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-        
-        .subtitle {
-            font-size: 1.5rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
-        }
-        
-        .features {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-
-        .feature-card {
-            background: rgba(255,255,255,0.1);
-            padding: 1rem;
-            border-radius: 8px;
-            width: 150px;
-            text-align: center;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2);
-        }
-
-        .feature-card h3 {
-            margin: 0 0 0.5rem 0;
-            font-size: 1rem;
-        }
-
-        .feature-card p {
-            margin: 0;
-            font-size: 0.8rem;
-            opacity: 0.8;
-        }
-</environment_details>
+                // Simple generate button handler
+                document.getElementById('generateBtn').addEventListener('click', () => {
+                    const pick = concepts[Math.floor(Math.random() * concepts.length)];
+                    document.getElementById('dreamOutput').textContent = pick;
+                });
+            </script>
+        </div>
+    </body>
+    </html>
